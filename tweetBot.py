@@ -6,9 +6,10 @@ import time
 
 def main():
 
+
+    # Attempt to import the APIKEYS required to auth with Twitter
     try:
         keyfile = open("apikeys.txt", 'r')
-
         keys = []
         for line in range (0,4):
             keys.append(keyfile.readline().rstrip())
@@ -33,11 +34,24 @@ def main():
 
     while True:
         print("\nRefreshing...")
-        newest_mention, all_tweets = get_latest_tweets(api)
+        #newest_mention, all_tweets = get_latest_tweets(api) #The old one as well
         #all_tweets = api.mentions_timeline()
+        detect_and_reply(api)
 
-        reply_to_tweet(api, newest_mention, all_tweets)
+        #reply_to_tweet(api, newest_mention, all_tweets) #The old one
         time.sleep(60)
+
+
+
+def detect_and_reply(api):
+    myStreamListener= tweet.MyStreamListener()
+
+    myStream = tweet.Stream(auth = api.auth, listener=myStreamListener)
+
+    myStream.filter(track=['@nenoSong']) #so that it is only detecting what is going to this account
+    
+
+
 
 
 def song_lookup(song_lyric):
@@ -68,7 +82,7 @@ def reply_to_tweet(api, newest_mention, all_tweets):
     for i in range(1,len(all_tweets)): # want everything except for the first tweet
         already_replied.append(all_tweets[i])
 
-
+    #TODO Replace this junk of code with the streamer
     try:
 
 
