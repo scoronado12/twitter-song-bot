@@ -18,6 +18,7 @@ def main():
         ACCESS_KEY = keys[2]
         ACCESS_SECRET = keys[3]
         
+        #close file
         keyfile.close()
     except:
         print("An Unknown Error has occured importing the API Keys")
